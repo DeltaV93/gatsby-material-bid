@@ -24,3 +24,30 @@
 @import "plugins/plugin-nouislider";
 @import "plugins/plugin-react-datetime";
 @import "plugins/plugin-react-slick";
+
+.bg--black {
+  background-color: #000;
+  color: #fff;
+  height: 100%;
+}
+
+.bg--white {
+  background-color: #fff;
+  color: #000;
+  height: 100%;
+}
+
+.bg--primary {
+  background-color: cyan;
+  color: #000;
+  height: 100%;
+}
+
+.slide {
+  height: 100vh;
+  padding: 80px;
+  .slide--wrapper {
+    //height: 55vh;
+    height: 50vh;
+  }
+}
