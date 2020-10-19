@@ -24,7 +24,7 @@ exports.handler = function(event, context, callback) {
       if (err) {
         callback(err)
       } else {
-        const body = JSON.stringify({ intro: allRecords })
+        const body = JSON.stringify({ intro: allRecords[0].fields })
         const response = {
           statusCode: 200,
           body: body,

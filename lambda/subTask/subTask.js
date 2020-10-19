@@ -8,7 +8,7 @@ const base = Airtable.base(process.env.AIRTABLE_BASE)
 
 exports.handler = function(event, context, callback) {
   const allRecords = []
-  base('Sub Task')
+  base('Sub Tasks')
   .select({
     maxRecords: 100,
     view: 'sorted'
