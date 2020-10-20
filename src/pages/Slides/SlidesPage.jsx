@@ -34,7 +34,8 @@ const SlidesPage = props => {
   const [ subTasks, setSubTasks ] = useState( [] );
   const [ otherCost, setOtherCost ] = useState( [] );
   const [chartItems, setChartItems] = useState([]);
-  const [ isChartLoadingstate, setIsChartLoadingstate ] = useState( true )
+  const [ isChartLoadingstate, setIsChartLoadingstate ] = useState( true );
+  const [ test, setTest ] = useState( null );
 
 
   useEffect(() => {
@@ -79,67 +80,57 @@ const SlidesPage = props => {
   }, []);
 
   const buildChartData = () => {
-    // const testData = {
-    //   [
-    //       [
-    //         { type: 'string', label: 'Task ID' },
-    //         { type: 'string', label: 'Task Name' },
-    //         { type: 'string', label: 'Resource' },
-    //         { type: 'date', label: 'Start Date' },
-    //         { type: 'date', label: 'End Date' },
-    //         { type: 'number', label: 'Duration' },
-    //         { type: 'number', label: 'Percent Complete' },
-    //         { type: 'string', label: 'Dependencies' },
-    //       ]
-    //   }
-    // ]
-    //   [
-    //     '2014Spring',
-    //   'Spring 2014',
-    //   'spring',
-    //   new Date(2014, 2, 22),
-    //   new Date(2014, 5, 20),
-    //   null,
-    //   100,
-    //   null,
-    // ];
     if (taskGroup.length > 0) {
       let allItems = []
 
       taskGroup.map( ( group ) => {
-        const taskName = group.fields["Task/Feature"];
-        const taskId = taskName.split(" ").join("");
-        const resource = taskId.toLowerCase();
-        let startDate;
-        let dueDate;
-        let newItem = [];
+
         subTasks.map((subTask) =>{
           if(subTask.fields["Task"][0] === group.id){
-            console.log(subTask)
-            startDate = new Date(subTask.fields["Start"]);
-            dueDate = new Date(subTask.fields["Due"]);
-            newItem = [taskName,taskId,resource,startDate,dueDate, null, 0, null];
+            let subTaskName = subTask.fields["Name"];
+            let taskName = group.fields["Task/Feature"];
+            const taskId = taskName.split(" ").join("");
+            const resource = taskId.toLowerCase();
+            let startDate = new Date(subTask.fields["Start"]);
+            let dueDate = new Date(subTask.fields["Due"]);
+            let newItem;
+            newItem = [taskId, subTaskName,resource,startDate,dueDate, null, 0, null];
             allItems.push(newItem)
-            setChartItems(newItem);
-            console.log({newItem, allItems})
+            // setChartItems(newItem);
           }
         })
-        setIsChartLoadingstate(false);
-        // console.log( data )
       } )
+      console.log({allItems})
+      setIsChartLoadingstate(false)
+      setChartItems(allItems)
     }
   }
-  // const renderBudgetTable = () => {
-  // if(taskGroup.length >= 0) {
-    // console.log(taskGroup )
 
-    // for
-  // }
-  // }
-  // renderBudgetTable();
+  useEffect( () => {
+      buildChartData()
+  }, [ taskGroup ] )
+
+  useEffect( () => {
+      setTest([
+        [
+          { type: 'string', label: 'Task ID' },
+          { type: 'string', label: 'Task Name' },
+          { type: 'string', label: 'Resource' },
+          { type: 'date', label: 'Start Date' },
+          { type: 'date', label: 'End Date' },
+          { type: 'number', label: 'Duration' },
+          { type: 'number', label: 'Percent Complete' },
+          { type: 'string', label: 'Dependencies' },
+        ],
+        chartItems
+      ])
+
+    console.log({test})
+  }, [ chartItems ] )
+
 
   const moneyFormat= (amount) =>{
-    var formatter = new Intl.NumberFormat('en-US', {
+    const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
     });
@@ -470,37 +461,26 @@ const SlidesPage = props => {
             </section>
         ))}
         {/* TIMELINE */}
-        <section className="slide bg--white">
+        <section style={{height: "120%"}} className="slide bg--white">
           <GridContainer alignItems="center" className="slide-wrapper">
             <GridItem sm={12}>
               <h1>Timeline</h1>
-              {!isChartLoadingstate &&  (
-            <Chart
-            width={'100%'}
-            height={'400px'}
-            chartType="Gantt"
-            loader={<div>Loading Chart</div>}
-            data={[
-              [
-                { type: 'string', label: 'Task ID' },
-                { type: 'string', label: 'Task Name' },
-                { type: 'string', label: 'Resource' },
-                { type: 'date', label: 'Start Date' },
-                { type: 'date', label: 'End Date' },
-                { type: 'number', label: 'Duration' },
-                { type: 'number', label: 'Percent Complete' },
-                { type: 'string', label: 'Dependencies' },
-              ],
-              ...chartItems
-            ]}
-            options={{
-              height: 400,
-              gantt: {
-                trackHeight: 30,
-              },
-            }}
-            rootProps={{ 'data-testid': '2' }}
-          />
+              {test &&  (
+              <Chart
+                initialState={{dataLoadingStatus: 'loading', chartData: []}}
+                width={'100%'}
+                height={'800px'}
+                chartType="Gantt"
+                loader={<div>Loading Chart</div>}
+                data={[...test[0], ...test[1]]}
+                options={{
+                  height: 900,
+                  gantt: {
+                    trackHeight: 30,
+                  },
+                }}
+                rootProps={{ 'data-testid': '2' }}
+              />
               )}
             </GridItem>
           </GridContainer>
