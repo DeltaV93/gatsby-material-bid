@@ -36,6 +36,8 @@
     "marked": "^1.2.0",
     "node-sass": "^4.11.0",
     "nouislider": "^13.1.1",
+    "picasso-plugin-q": "^0.34.0",
+    "picasso.js": "^0.34.0",
     "react": "^16.8.4",
     "react-datetime": "^2.16.3",
     "react-dom": "^16.8.4",

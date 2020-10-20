@@ -7468,6 +7468,16 @@ physical-cpu-count@^2.0.0:
   resolved "https://registry.yarnpkg.com/physical-cpu-count/-/physical-cpu-count-2.0.0.tgz#18de2f97e4bf7a9551ad7511942b5496f7aba660"
   integrity sha1-GN4vl+S/epVRrXURlCtUlverpmA=
 
+picasso-plugin-q@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/picasso-plugin-q/-/picasso-plugin-q-0.34.0.tgz#ec4afd8eb4f5f6e2e3c8b4abf495b1576a7b4e53"
+  integrity sha512-WsVoaIqwqf29mnuIX1Xm3nnqol+k+4HRT1dNzq8ChudF6c9qxbHNQrqEpWLMvKouPP/NlergGFO2OY9Wo9h+ig==
+
+picasso.js@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/picasso.js/-/picasso.js-0.34.0.tgz#ac4b01926bc9d641032d2e97d906d4efeb98204b"
+  integrity sha512-Wot3FpTtBcgqr2IPd1eo6t3Y6fF63yjFuULizu6HRIeWpy4+sGGDU8VgX0pc+fRPL7ZzabbulsFIWeN8MhOk4A==
+
 pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"

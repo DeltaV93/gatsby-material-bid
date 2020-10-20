@@ -89,8 +89,8 @@ const SlidesPage = props => {
           if(subTask.fields["Task"][0] === group.id){
             let subTaskName = subTask.fields["Name"];
             let taskName = group.fields["Task/Feature"];
-            const taskId = taskName.split(" ").join("");
-            const resource = taskId.toLowerCase();
+            const taskId = subTaskName.replace(/[^A-Z0-9]/ig, "");
+            const resource = taskName;
             let startDate = new Date(subTask.fields["Start"]);
             let dueDate = new Date(subTask.fields["Due"]);
             let newItem;
@@ -100,7 +100,6 @@ const SlidesPage = props => {
           }
         })
       } )
-      console.log({allItems})
       setIsChartLoadingstate(false)
       setChartItems(allItems)
     }
@@ -125,7 +124,6 @@ const SlidesPage = props => {
         chartItems
       ])
 
-    console.log({test})
   }, [ chartItems ] )
 
 
@@ -293,10 +291,12 @@ const SlidesPage = props => {
                       md={6}
                       className="slide bg--white">
               <p className='text-align__left'>
-                At Phoenixing we're focused on creating user-centered ethical
-                secure and accessible experiences for organizations. As a
+                At Phoenixing we're focused on creating user-centered digital
+                experiences that are centered around our cour values; ethical,
+                security, and accessibility. Through these values, we're
+                looking to change the way the industry looks and operates. As a
                 remote-first diversity-centered agency we are able to build
-                products beyond the limitation of default homogeneous tech teams.
+                products beyond the limitation of default homogeneous tech teams
               </p>
               <p>
                 We are a new company, yet we have a growing team with decades of
@@ -354,7 +354,7 @@ const SlidesPage = props => {
                 <p>
                   Professional fees for the services are estimated to total between <strong>{moneyFormat(intro["Total Cost"])} - {moneyFormat(intro["Value Cost"])}</strong> for the
                   project approach outlined in this proposal. Services will be billed on a flat value based price or time
-                  & material estimate. Estimates are based on the objectives, scope of work, activities, deliverable and
+                  & material estimate. Estimates are based on the objectives, scope of work, activities, deliverables, and
                   timeline as described in this proposal.
                 </p>
                 <p>
@@ -371,7 +371,7 @@ const SlidesPage = props => {
           </GridContainer>
         </section>
         {/* BUDGET */}
-        { taskGroup && taskGroup.map((name) => (
+        { taskGroup && taskGroup.map((groupName) => (
           <section className="slide bg--black">
             <div className="slide--wrapper">
               <GridContainer>
@@ -380,10 +380,10 @@ const SlidesPage = props => {
                     Budget
                   </h1>
                   <h2>
-                    {name.fields["Task/Feature"]}
+                    {groupName.fields["Task/Feature"]}
                   </h2>
                 </GridItem>
-                <GridItem key={name.fields["Task/Feature"]} sm={12} md={7}>
+                <GridItem key={groupName.fields["Task/Feature"]} sm={12} md={7}>
                   <table className='table__breakdown'>
                     {/*<caption>A basic table example with a caption</caption>*/}
                     <thead>
@@ -395,7 +395,7 @@ const SlidesPage = props => {
                     </thead>
                     <tbody>
                     { subTasks && subTasks.map(subTask =>{
-                      if(subTask.fields["Task"][0] === name.id){
+                      if(subTask.fields["Task"][0] === groupName.id){
                         return(
                           <tr>
                             <td style={ { 'width': '50ch' } }>{subTask.fields["Name"]}</td>
@@ -408,15 +408,16 @@ const SlidesPage = props => {
                     </tbody>
                     <tfoot>
                     <tr>
-                      <td style={ { 'width': '10ch' } }/>
+                      <td style={ { 'width': '10ch' } }>
+                      </td>
                       <td style={ { 'width': '15ch' } }>
                         <strong>
-                          Total Cost
+                          {groupName.fields["dev-hours"]}
                         </strong>
                       </td>
                       <td style={ { 'width': '15ch' } }>
                         <strong>
-                          {name.fields["Total Costs"]}
+                          {groupName.fields["design-hours"]}
                         </strong>
                       </td>
                     </tr>
@@ -428,20 +429,24 @@ const SlidesPage = props => {
                     <TableHead>
                       <TableRow>
                         <TableCell className="text--white">
-                          *Value Based Price
+                          <p>
+                            *Value Based Price
+                          </p>
                         </TableCell>
                         <TableCell className="text--white">
-                          Total Cost
+                          <p>
+                            Total Cost
+                          </p>
                         </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       <TableRow>
                         <TableCell className="text--white">
-                          { moneyFormat(name.fields["Value Cost"]) }
+                          { moneyFormat(groupName.fields["Value Cost"]) }
                         </TableCell>
                         <TableCell className="text--white">
-                          { moneyFormat(name.fields["Total Costs"]) }
+                          { moneyFormat(groupName.fields["Total Costs"]) }
                         </TableCell>
                       </TableRow>
                     </TableBody>
@@ -461,18 +466,17 @@ const SlidesPage = props => {
             </section>
         ))}
         {/* TIMELINE */}
-        <section style={{height: "120%"}} className="slide bg--white">
+        <section style={{height: "1100px"}} className="slide bg--white">
           <GridContainer alignItems="center" className="slide-wrapper">
             <GridItem sm={12}>
               <h1>Timeline</h1>
               {test &&  (
               <Chart
-                initialState={{dataLoadingStatus: 'loading', chartData: []}}
                 width={'100%'}
                 height={'800px'}
                 chartType="Gantt"
                 loader={<div>Loading Chart</div>}
-                data={[...test[0], ...test[1]]}
+                data={[test[0], ...test[1]]}
                 options={{
                   height: 900,
                   gantt: {
